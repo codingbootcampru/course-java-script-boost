@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+</head>
+<body>
+    <h3>Create Post</h3>
+    <input type="text" placeholder="title" id="titlePost">
+    <input type="text" placeholder="text" id="textPost">
+    <input type="text" placeholder="postId" id="postId">
+    <button id="createPost">Create Post</button>
+    <button id="updatePost">Update Post</button>
+    <button id="deletePost">Delete Post</button>
+
+    <hr>
+    <h3>All Posts</h3>
+    <button id="getAllPosts">Get All Posts</button>
+    <div id="allPosts"></div>
+
+
+    <script>
+        let titlePost = $('#titlePost');
+        let textPost = $('#textPost');
+        let createPost = $('#createPost');
+
+        createPost.on('click', function() {
+            $.ajax({
+                url: 'http://localhost:3000/api/createPost',
+                method: 'POST',
+                data: {
+                    title: titlePost.val(),
+                    text: textPost.val()
+                },
+                success: function(msg) {
+                    console.log(msg);
+                }
+            })
+        })
+
+        let getAllPosts = $('#getAllPosts');
+
+        getAllPosts.on('click', function() {
+            $.ajax({
+                url: 'http://localhost:3000/api/getAllPosts',
+                method: 'GET',
+                success: function(posts) {
+                    var strPosts = JSON.stringify(posts);
+                    $( "#allPosts" ).text(strPosts);
+                    console.log(posts);
+                }
+            })
+        })
+
+        let postId = $('#postId');
+        let updatePost = $('#updatePost');
+
+        updatePost.on('click', function() {
+            $.ajax({
+                url: 'http://localhost:3000/api/updatePost/' + postId.val(),
+                method: 'PATCH',
+                data: {
+                    title: titlePost.val(),
+                    text: textPost.val()
+                },
+                success: function(msg) {
+                    console.log(msg);
+                }
+            })
+        })
+
+        let deletePost = $('#deletePost');
+
+        deletePost.on('click', function() {
+            $.ajax({
+                url: 'http://localhost:3000/api/deletePost/' + postId.val(),
+                method: 'DELETE',
+                success: function(msg) {
+                    console.log(msg);
+                }
+            })
+        })
+
+    </script>
+</body>
+</html>
